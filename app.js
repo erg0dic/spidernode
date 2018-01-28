@@ -25,7 +25,7 @@ var connection = new Connection(generateConfig('critter'));
 app.get('/increment', function (req, res) {
     console.log('Starting GET Request');
     var query = req.query.species;
-    var SQL = "UPDATE Bites SET bites=bites+1 WHERE SubCatgory='"+query+"'";
+    var SQL = "UPDATE Bites SET bites=bites+1 WHERE SubCatgory='"+querySort(query)+"'";
     console.log('Reading rows from the Table...');
     var result = [];
     // Read all rows from table
@@ -46,11 +46,14 @@ app.get('/increment', function (req, res) {
     });
     connection.execSql(request);
 });
+function querySort(query) {
+    return query.replace('_',' ')
 
+}
 app.get('/critter', function (req, res) {
     console.log('Starting GET Request');
     var query = req.query.species;
-    var SQL = "SELECT b.Bites, c.DangerLevel, c.Description FROM critter c LEFT JOIN  BITES b ON b.SubCatgory = c.SubCatagory WHERE b.SubCatgory='"+query+"'";
+    var SQL = "SELECT b.Bites, c.DangerLevel, c.Description FROM critter c LEFT JOIN  BITES b ON b.SubCatgory = c.SubCatagory WHERE b.SubCatgory='"+querySort(query)+"'";
     console.log('Reading rows from the Table...');
     var result = [];
     // Read all rows from table
